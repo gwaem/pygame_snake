@@ -1,4 +1,4 @@
-import sys, random
+import random
 
 import pygame
 
@@ -11,9 +11,15 @@ class Game:
     def __init__(self):
         pygame.init()
 
+        self.SCREEN_WIDTH = 320
+        self.SCREEN_HEIGHT = 240
+        self.TILE_SIZE = (16, 16)
+
         pygame.display.set_caption("Snake")
-        self.screen = pygame.display.set_mode((640, 480))
-        self.display = pygame.Surface((320, 240))
+        self.screen = pygame.display.set_mode(
+            (self.SCREEN_WIDTH * 2, self.SCREEN_HEIGHT * 2)
+        )
+        self.display = pygame.Surface((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
 
         self.clock = pygame.time.Clock()
 
@@ -23,16 +29,25 @@ class Game:
 
         self.assets = {
             "player": pygame.transform.scale(
-                load_image("entities/player/player.png"), (16, 16)
+                load_image("entities/player/player.png"), self.TILE_SIZE
             ),
-            "apple": pygame.transform.scale(load_image("entities/apple.png"), (16, 16)),
-            "tile_0": pygame.transform.scale(load_image("tiles/tile_0.png"), (16, 16)),
-            "tile_1": pygame.transform.scale(load_image("tiles/tile_1.png"), (16, 16)),
+            "apple": pygame.transform.scale(
+                load_image("entities/apple.png"), self.TILE_SIZE
+            ),
+            "tile_0": pygame.transform.scale(
+                load_image("tiles/tile_0.png"), self.TILE_SIZE
+            ),
+            "tile_1": pygame.transform.scale(
+                load_image("tiles/tile_1.png"), self.TILE_SIZE
+            ),
         }
 
-        self.player = PhysicsEntity(self, "player", (5, 8), (16, 16))
+        self.player = PhysicsEntity(self, "player", (5, 8), self.TILE_SIZE)
         self.apple = Entity(
-            self, "apple", (random.randint(0, 19), random.randint(0, 15)), (16, 16)
+            self,
+            "apple",
+            (random.randint(0, 19), random.randint(0, 14)),
+            self.TILE_SIZE,
         )
 
         self.tilemap = Tilemap(self)

@@ -22,8 +22,14 @@ class PhysicsEntity(Entity):
     def update(self, movement=(0, 0)):
         """Update the player position."""
 
-        self.pos[0] += movement[0]
-        self.pos[1] += movement[1]
+        if movement[0] == 1 and self.pos[0] < 19:
+            self.pos[0] += movement[0]
+        if movement[0] == -1 and self.pos[0] > 0:
+            self.pos[0] += movement[0]
+        if movement[1] == 1 and self.pos[1] < 14:
+            self.pos[1] += movement[1]
+        if movement[1] == -1 and self.pos[1] > 0:
+            self.pos[1] += movement[1]
 
     def render(self, surface):
         pixel_pos = tile_to_pixel(self.pos)
