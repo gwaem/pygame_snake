@@ -12,9 +12,9 @@ def load_image(path):
     return img
 
 
-def tile_to_pixel(pos):
+def tile_to_pixel(pos, tile_size):
     pos = list(pos)
-    new_pos = (pos[0] * 16), (pos[1] * 16)
+    new_pos = (pos[0] * tile_size), (pos[1] * tile_size)
 
     return new_pos
 

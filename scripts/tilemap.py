@@ -7,9 +7,9 @@ class Tilemap:
         self.tile_size = tile_size
         self.tiles = []
 
-        for y in range(15):
+        for y in range(self.game.TILES_Y):
             row = []
-            for x in range(20):
+            for x in range(self.game.TILES_X):
                 row.append(0)
             self.tiles.append(row)
 

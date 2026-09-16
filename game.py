@@ -3,17 +3,19 @@ import random
 import pygame
 
 from scripts.utils import *
-from scripts.entities import PhysicsEntity, Entity
+from scripts.entities import PlayerEntity, Entity
 from scripts.tilemap import Tilemap
 
 
 class Game:
     def __init__(self):
         pygame.init()
+        self.TILES_X = 20
+        self.TILES_Y = 15
+        self.TILE_SIZE = 32
 
-        self.SCREEN_WIDTH = 320
-        self.SCREEN_HEIGHT = 240
-        self.TILE_SIZE = (16, 16)
+        self.SCREEN_WIDTH = self.TILES_X * self.TILE_SIZE
+        self.SCREEN_HEIGHT = self.TILES_Y * self.TILE_SIZE
 
         pygame.display.set_caption("Snake")
         self.screen = pygame.display.set_mode(
@@ -29,28 +31,31 @@ class Game:
 
         self.assets = {
             "player": pygame.transform.scale(
-                load_image("entities/player/player.png"), self.TILE_SIZE
+                load_image("entities/player/player.png"),
+                (self.TILE_SIZE, self.TILE_SIZE),
             ),
             "apple": pygame.transform.scale(
-                load_image("entities/apple.png"), self.TILE_SIZE
+                load_image("entities/apple.png"), (self.TILE_SIZE, self.TILE_SIZE)
             ),
             "tile_0": pygame.transform.scale(
-                load_image("tiles/tile_0.png"), self.TILE_SIZE
+                load_image("tiles/tile_0.png"), (self.TILE_SIZE, self.TILE_SIZE)
             ),
             "tile_1": pygame.transform.scale(
-                load_image("tiles/tile_1.png"), self.TILE_SIZE
+                load_image("tiles/tile_1.png"), (self.TILE_SIZE, self.TILE_SIZE)
             ),
         }
 
-        self.player = PhysicsEntity(self, "player", (5, 8), self.TILE_SIZE)
+        self.player = PlayerEntity(
+            self, "player", (3, 7), (self.TILE_SIZE, self.TILE_SIZE)
+        )
         self.apple = Entity(
             self,
             "apple",
-            (random.randint(0, 19), random.randint(0, 14)),
-            self.TILE_SIZE,
+            (random.randint(0, self.TILES_X - 1), random.randint(0, self.TILES_Y - 1)),
+            (self.TILE_SIZE, self.TILE_SIZE),
         )
 
-        self.tilemap = Tilemap(self)
+        self.tilemap = Tilemap(self, self.TILE_SIZE)
 
     def run(self):
         while True:
