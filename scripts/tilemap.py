@@ -18,11 +18,11 @@ class Tilemap:
             for x, tile in enumerate(row):
                 if (x + y) % 2 == 0:
                     surface.blit(
-                        self.game.assets["tile_0"],
+                        self.game.assets["tiles"]["tile_0.png"],
                         (x * self.tile_size, y * self.tile_size),
                     )
                 else:
                     surface.blit(
-                        self.game.assets["tile_1"],
+                        self.game.assets["tiles"]["tile_1.png"],
                         (x * self.tile_size, y * self.tile_size),
                     )

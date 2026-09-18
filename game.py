@@ -30,19 +30,9 @@ class Game:
         self.movement = [0, 0]
 
         self.assets = {
-            "player": pygame.transform.scale(
-                load_image("entities/player/player.png"),
-                (self.TILE_SIZE, self.TILE_SIZE),
-            ),
-            "apple": pygame.transform.scale(
-                load_image("entities/apple.png"), (self.TILE_SIZE, self.TILE_SIZE)
-            ),
-            "tile_0": pygame.transform.scale(
-                load_image("tiles/tile_0.png"), (self.TILE_SIZE, self.TILE_SIZE)
-            ),
-            "tile_1": pygame.transform.scale(
-                load_image("tiles/tile_1.png"), (self.TILE_SIZE, self.TILE_SIZE)
-            ),
+            "player": load_images("entities/player", self.TILE_SIZE),
+            "apple": load_image("entities/apple.png", self.TILE_SIZE),
+            "tiles": load_images("tiles", self.TILE_SIZE),
         }
 
         self.player = PlayerEntity(

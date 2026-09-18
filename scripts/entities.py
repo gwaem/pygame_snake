@@ -31,4 +31,4 @@ class PlayerEntity(Entity):
 
     def render(self, surface):
         pixel_pos = tile_to_pixel(self.pos, self.game.TILE_SIZE)
-        surface.blit(self.game.assets["player"], pixel_pos)
+        surface.blit(self.game.assets["player"]["player_head.png"], pixel_pos)
