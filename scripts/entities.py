@@ -1,21 +1,22 @@
+import random
+
 from scripts.utils import *
 
 
 class Entity:
-    def __init__(self, game, entity_type, pos, size):
+    def __init__(self, game, entity_type, pos):
         self.game = game
         self.entity_type = entity_type
         self.pos = list(pos)
-        self.size = size
 
     def render(self, surface):
         pixel_pos = tile_to_pixel(self.pos, self.game.TILE_SIZE)
-        surface.blit(self.game.assets["apple"], pixel_pos)
+        surface.blit(self.game.assets[self.entity_type], pixel_pos)
 
 
 class PlayerEntity(Entity):
-    def __init__(self, game, entity_type, pos, size):
-        super().__init__(game, entity_type, pos, size)
+    def __init__(self, game, pos):
+        super().__init__(game, "player", pos)
 
     def update(self, movement=(0, 0)):
         """Update the player position."""
@@ -31,4 +32,13 @@ class PlayerEntity(Entity):
 
     def render(self, surface):
         pixel_pos = tile_to_pixel(self.pos, self.game.TILE_SIZE)
-        surface.blit(self.game.assets["player"]["player_head.png"], pixel_pos)
+        surface.blit(self.game.assets[self.entity_type]["player_head.png"], pixel_pos)
+
+
+class AppleEntity(Entity):
+    def __init__(self, game, pos):
+        super().__init__(game, "apple", pos)
+
+    def update(self):
+        self.pos[0] = random.randint(0, self.game.TILES_X - 1)
+        self.pos[1] = random.randint(0, self.game.TILES_Y - 1)

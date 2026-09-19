@@ -3,7 +3,7 @@ import random
 import pygame
 
 from scripts.utils import *
-from scripts.entities import PlayerEntity, Entity
+from scripts.entities import PlayerEntity, AppleEntity
 from scripts.tilemap import Tilemap
 
 
@@ -35,22 +35,16 @@ class Game:
             "tiles": load_images("tiles", self.TILE_SIZE),
         }
 
-        self.player = PlayerEntity(
-            self, "player", (3, 7), (self.TILE_SIZE, self.TILE_SIZE)
-        )
-        self.apple = Entity(
-            self,
-            "apple",
-            (random.randint(0, self.TILES_X - 1), random.randint(0, self.TILES_Y - 1)),
-            (self.TILE_SIZE, self.TILE_SIZE),
-        )
+        self.player = PlayerEntity(self, (3, 7))
+        self.apple = AppleEntity(self, (16, 7))
+
+        self.pickUpSound = load_sound("pickup.wav")
 
         self.tilemap = Tilemap(self, self.TILE_SIZE)
 
     def run(self):
         while True:
             self.current_time = pygame.time.get_ticks()
-            self.display.fill((14, 219, 248))
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -72,6 +66,10 @@ class Game:
                         terminate()
 
             self.tilemap.render(self.display)
+
+            if self.apple.pos == self.player.pos:
+                self.apple.update()
+                self.pickUpSound.play()
 
             self.apple.render(self.display)
 
