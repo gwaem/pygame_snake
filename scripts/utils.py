@@ -33,7 +33,6 @@ def tile_to_pixel(pos, tile_size):
     """Take a tile position and transform it into a pixel position."""
     pos = list(pos)
     new_pos = (pos[0] * tile_size), (pos[1] * tile_size)
-
     return new_pos
 
 

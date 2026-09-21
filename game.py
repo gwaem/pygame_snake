@@ -34,11 +34,10 @@ class Game:
             "apple": load_image("entities/apple.png", self.TILE_SIZE),
             "tiles": load_images("tiles", self.TILE_SIZE),
         }
+        self.pickUpSound = load_sound("pickup.wav")
 
         self.player = PlayerEntity(self, (3, 7))
         self.apple = AppleEntity(self, (16, 7))
-
-        self.pickUpSound = load_sound("pickup.wav")
 
         self.tilemap = Tilemap(self, self.TILE_SIZE)
 
@@ -70,13 +69,11 @@ class Game:
             if self.apple.pos == self.player.pos:
                 self.apple.update()
                 self.pickUpSound.play()
-
             self.apple.render(self.display)
 
             if self.current_time - self.last_move_time >= 200:
                 self.player.update(self.movement)
                 self.last_move_time = self.current_time
-
             self.player.render(self.display)
 
             self.screen.blit(
