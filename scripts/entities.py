@@ -53,7 +53,6 @@ class PlayerEntity:
             self.current_head = self.head_asset
 
     def render(self, surface):
-        """Render the player on the screen."""
         for i, segment in enumerate(self.body):
             pixel_pos = tile_to_pixel(segment, self.game.TILE_SIZE)
 
@@ -85,6 +84,5 @@ class FoodEntity:
         self.pos = new_pos
 
     def render(self, surface):
-        """Render the food on the screen."""
         pixel_pos = tile_to_pixel(self.pos, self.game.TILE_SIZE)
         surface.blit(self.game.assets[self.food_type], pixel_pos)

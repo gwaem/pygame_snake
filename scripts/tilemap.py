@@ -4,7 +4,6 @@ class Tilemap:
         self.tile_size = tile_size
 
     def render(self, surface):
-        """Render the tilemap on screen."""
         for y in range(self.game.TILES_Y):
             for x in range(self.game.TILES_X):
                 if (x + y) % 2 == 0:
