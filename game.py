@@ -28,7 +28,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.last_move_time = pygame.time.get_ticks()
 
-        self.movement = [0, 0]
+        self.movement = [1, 0]
 
         self.assets = {
             "player": utils.load_images("entities/player", self.TILE_SIZE),
@@ -52,23 +52,28 @@ class Game:
                     if event.key in (pygame.K_w, pygame.K_UP):
                         if self.movement[1] != 1:
                             self.movement = [0, -1]
+                            self.player.rotate_head(self.movement)
                     if event.key in (pygame.K_s, pygame.K_DOWN):
                         if self.movement[1] != -1:
                             self.movement = [0, 1]
+                            self.player.rotate_head(self.movement)
                     if event.key in (pygame.K_a, pygame.K_LEFT):
                         if self.movement[0] != 1:
                             self.movement = [-1, 0]
+                            self.player.rotate_head(self.movement)
                     if event.key in (pygame.K_d, pygame.K_RIGHT):
                         if self.movement[0] != -1:
                             self.movement = [1, 0]
+                            self.player.rotate_head(self.movement)
                     if event.key == pygame.K_ESCAPE:
                         self.terminate()
 
             self.tilemap.render(self.display)
 
             if self.apple.pos == self.player.body[0]:
+                self.player.update(self.movement, grow=True)
                 self.apple.respawn()
-                self.pickUpSound.play()
+                # self.pickUpSound.play()
             self.apple.render(self.display)
 
             if self.current_time - self.last_move_time >= 200:
