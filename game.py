@@ -76,6 +76,7 @@ class Game:
 
         while True:
             self.score = 0
+            self.top_score = 0
             while True:
                 self.current_time = pygame.time.get_ticks()
 
@@ -115,17 +116,47 @@ class Game:
                 # Move the player after a given period.
                 if self.current_time - self.last_move_time >= 200:
                     if self.movement != [0, 0]:
-                        self.player.update(self.movement)
+                        game_over = self.player.update(self.movement)
+
+                        if game_over is True:
+                            if self.score > self.top_score:
+                                self.top_score = self.score
+                            break
                         self.last_move_time = self.current_time
                 self.player.render(self.display)
 
                 self.draw_text(f"Score:{self.score}", self.font, self.display, 10, 0)
+                self.draw_text(
+                    f"Top Score:{self.top_score}", self.font, self.display, 200, 0
+                )
 
                 self.screen.blit(
                     pygame.transform.scale(self.display, self.screen.get_size()), (0, 0)
                 )
                 pygame.display.update()
                 self.clock.tick(self.FPS)
+
+            # Show the "Game Over" screen.
+            self.display.fill(self.BACKGROUNDCOLOR)
+            self.draw_text(
+                "GAME OVER",
+                self.font,
+                self.display,
+                (self.SCREEN_WIDTH / 3),
+                (self.SCREEN_HEIGHT / 3),
+            )
+            self.draw_text(
+                "Press a key to play again.",
+                self.font,
+                self.display,
+                (self.SCREEN_WIDTH / 3) - 80,
+                (self.SCREEN_HEIGHT / 3) + 50,
+            )
+            self.screen.blit(
+                pygame.transform.scale(self.display, self.screen.get_size()), (0, 0)
+            )
+            pygame.display.update()
+            self.wait_for_player_to_press_key()
 
     def terminate(self):
         pygame.quit()

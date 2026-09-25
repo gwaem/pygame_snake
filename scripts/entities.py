@@ -41,6 +41,8 @@ class PlayerEntity:
 
                 for i, pos in enumerate(old_body[:-1]):
                     self.body[i + 1] = pos
+            else:
+                return True
 
     def rotate_head(self, movement=(0, 0)):
         if movement == [0, -1]:
