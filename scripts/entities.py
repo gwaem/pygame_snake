@@ -12,6 +12,7 @@ class PlayerEntity:
         self.body_asset = self.game.assets["player"]["player_body.png"]
         self.tail_asset = self.game.assets["player"]["player_tail.png"]
         self.current_head = self.head_asset
+        self.current_tail = self.tail_asset
 
         # fmt: off
         self.body = [
@@ -46,10 +47,12 @@ class PlayerEntity:
 
                 for i, pos in enumerate(old_body[:-1]):
                     self.body[i + 1] = pos
+
+                self.update_tail()
             else:
                 return True
 
-    def rotate_head(self, movement=(0, 0)):
+    def update_head(self, movement=(0, 0)):
         if movement == [0, -1]:
             self.current_head = pygame.transform.rotate(self.head_asset, 90)
         elif movement == [0, 1]:
@@ -59,6 +62,21 @@ class PlayerEntity:
         else:
             self.current_head = self.head_asset
 
+    def update_tail(self):
+        prev_segment = self.body[-2]
+        tail = self.body[-1]
+        x_diff = tail[0] - prev_segment[0]
+        y_diff = tail[1] - prev_segment[1]
+
+        if x_diff > 0:
+            self.current_tail = pygame.transform.rotate(self.tail_asset, 180)
+        elif x_diff < 0:
+            self.current_tail = self.tail_asset
+        elif y_diff > 0:
+            self.current_tail = pygame.transform.rotate(self.tail_asset, 90)
+        else:
+            self.current_tail = pygame.transform.rotate(self.tail_asset, 270)
+
     def render(self, surface):
         for i, segment in enumerate(self.body):
             pixel_pos = tile_to_pixel(segment, self.game.TILE_SIZE)
@@ -66,7 +84,7 @@ class PlayerEntity:
             if i == 0:
                 asset = self.current_head
             elif i == len(self.body) - 1:
-                asset = self.tail_asset
+                asset = self.current_tail
             else:
                 asset = self.body_asset
 

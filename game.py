@@ -82,21 +82,18 @@ class Game:
                         if event.key in (pygame.K_w, pygame.K_UP):
                             if self.movement[1] != 1:
                                 self.movement = [0, -1]
-                                self.player.rotate_head(self.movement)
                         if event.key in (pygame.K_s, pygame.K_DOWN):
                             if self.movement[1] != -1:
                                 self.movement = [0, 1]
-                                self.player.rotate_head(self.movement)
                         if event.key in (pygame.K_a, pygame.K_LEFT):
                             if self.movement[0] != 1:
                                 self.movement = [-1, 0]
-                                self.player.rotate_head(self.movement)
                         if event.key in (pygame.K_d, pygame.K_RIGHT):
                             if self.movement[0] != -1:
                                 self.movement = [1, 0]
-                                self.player.rotate_head(self.movement)
                         if event.key == pygame.K_ESCAPE:
                             self.terminate()
+                    self.player.update_head(self.movement)
 
                 self.tilemap.render(self.display)
 
