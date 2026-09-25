@@ -25,6 +25,11 @@ class PlayerEntity:
         """Update the player position."""
         old_body = self.body[:]
 
+        if grow is True:
+            body_to_check = old_body
+        else:
+            body_to_check = old_body[:-1]
+
         new_x_pos = self.body[0][0] + movement[0]
         new_y_pos = self.body[0][1] + movement[1]
         new_head_pos = (new_x_pos, new_y_pos)
@@ -33,7 +38,7 @@ class PlayerEntity:
             0 <= new_x_pos <= self.game.TILES_X - 1
             and 0 <= new_y_pos <= self.game.TILES_Y - 1
         ):
-            if new_head_pos not in old_body:
+            if new_head_pos not in body_to_check:
                 self.body[0] = new_head_pos
 
                 if grow is True:

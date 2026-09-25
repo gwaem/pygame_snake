@@ -27,10 +27,6 @@ class Game:
         )
         self.display = pygame.Surface((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
 
-        # Set up Movement.
-        self.last_move_time = pygame.time.get_ticks()
-        self.movement = [1, 0]
-
         # Set up fonts.
         self.font = pygame.font.SysFont(None, 48)
 
@@ -44,12 +40,10 @@ class Game:
         # Set up sounds.
         self.pickUpSound = pygame.mixer.Sound("data/sfx/pickup.wav")
 
-        # Set up entities.
-        self.player = PlayerEntity(self)
-        self.apple = FoodEntity(self, "apple", (16, 7))
-
         # Set up tilemap.
         self.tilemap = Tilemap(self, self.TILE_SIZE)
+
+        self.reset_game()
 
         self.top_score = 0
 
@@ -77,11 +71,7 @@ class Game:
         self.wait_for_player_to_press_key()
 
         while True:
-            self.score = 0
-            self.player = PlayerEntity(self)
-            self.apple = FoodEntity(self, "apple", (16, 7))
-            self.movement = [1, 0]
-            self.last_move_time = pygame.time.get_ticks()
+            self.reset_game()
             while True:
                 self.current_time = pygame.time.get_ticks()
 
@@ -110,24 +100,29 @@ class Game:
 
                 self.tilemap.render(self.display)
 
-                # Respawn the apple after being eaten
-                if self.apple.pos == self.player.body[0]:
-                    self.player.update(self.movement, grow=True)
-                    self.apple.respawn()
-                    # self.pickUpSound.play()
-                    self.score += 5
-                self.apple.render(self.display)
-
                 # Move the player after a given period.
+                # If the player reaches the apple, grow the snake and respawn the apple.
                 if self.current_time - self.last_move_time >= 200:
                     if self.movement != [0, 0]:
-                        game_over = self.player.update(self.movement)
+                        next_x_pos = self.player.body[0][0] + self.movement[0]
+                        next_y_pos = self.player.body[0][1] + self.movement[1]
+                        next_pos = (next_x_pos, next_y_pos)
+
+                        if next_pos == self.apple.pos:
+                            game_over = self.player.update(self.movement, grow=True)
+                            self.apple.respawn()
+                            # self.pickUpSound.play()
+                            self.score += 5
+                        else:
+                            game_over = self.player.update(self.movement)
 
                         if game_over is True:
                             if self.score > self.top_score:
                                 self.top_score = self.score
                             break
                         self.last_move_time = self.current_time
+
+                self.apple.render(self.display)
                 self.player.render(self.display)
 
                 self.draw_text(f"Score:{self.score}", self.font, self.display, 10, 0)
@@ -182,6 +177,13 @@ class Game:
                     if event.key == pygame.K_ESCAPE:  # Pressing ESC quits.
                         self.terminate()
                     return
+
+    def reset_game(self):
+        self.score = 0
+        self.player = PlayerEntity(self)
+        self.apple = FoodEntity(self, "apple", (16, 7))
+        self.movement = [1, 0]
+        self.last_move_time = pygame.time.get_ticks()
 
 
 Game().run()
