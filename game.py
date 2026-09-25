@@ -51,6 +51,8 @@ class Game:
         # Set up tilemap.
         self.tilemap = Tilemap(self, self.TILE_SIZE)
 
+        self.top_score = 0
+
     def run(self):
         # Show the "Start" screen.
         self.display.fill(self.BACKGROUNDCOLOR)
@@ -76,7 +78,10 @@ class Game:
 
         while True:
             self.score = 0
-            self.top_score = 0
+            self.player = PlayerEntity(self)
+            self.apple = FoodEntity(self, "apple", (16, 7))
+            self.movement = [1, 0]
+            self.last_move_time = pygame.time.get_ticks()
             while True:
                 self.current_time = pygame.time.get_ticks()
 
